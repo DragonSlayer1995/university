@@ -20,8 +20,12 @@ for _ in range(3):
         if len(result[faculty]) >= maximum_students:
             continue
         sorted_applicant = sorted(sorted_applicant,
-                                  key=lambda x: (
-                                      -float(x[science_indexes[faculty]]), x[0] + ' ' + x[1]))
+                                  key=lambda x: (-((float(x[2]) + float(x[3])) / 2) if faculty == 'Biotech'
+                                                 else -((float(x[4]) + float(x[5])) / 2) if faculty == 'Engineering'
+                                                 else -((float(x[2]) + float(x[4])) / 2) if faculty == 'Physics'
+                                                 else -float(x[3]) if faculty == 'Chemistry'
+                                                 else -float(x[4]),
+                                                 x[0] + ' ' + x[1]))
         faculty_list = [x for x in sorted_applicant if x[i] == faculty]
         maximum_students = maximum_students
         if len(faculty_list) > maximum_students - len(result[faculty]):
@@ -39,5 +43,10 @@ for key in result.keys():
 for key, value in result.items():
     print(key)
     for student in value:
-        print(student[0], student[1], student[science_indexes[key]])
+        print(student[0], student[1], (float(student[2]) + float(student[3])) / 2 if key == 'Biotech'
+              else ((float(student[4]) + float(student[5])) / 2) if key == 'Engineering'
+              else ((float(student[2]) + float(student[4])) / 2) if key == 'Physics'
+              else float(student[3]) if key == 'Chemistry'
+              else float(student[4])
+              )
     print()
